@@ -1,0 +1,23 @@
+.stars-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1; /* Se va al fondo */
+  background: black url('https://www.transparenttextures.com/patterns/stardust.png') repeat top center;
+  animation: stars-animation 500s linear infinite;
+  pointer-events: none; /* Aquí sí, para que los clics pasen de largo y lleguen al navbar */
+}
+
+/* El body debe estar limpio */
+body {
+  background-color: black;
+  margin: 0;
+  padding: 0;
+}
+
+@keyframes stars-animation {
+  0% { background-position: 0 0; }
+  100% { background-position: 10000px 5000px; }
+}

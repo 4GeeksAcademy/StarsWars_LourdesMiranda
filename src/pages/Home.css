@@ -1,0 +1,10 @@
+@font-face {
+    font-family: "Star Jedi";
+    src: url("https://db.onlinewebfonts.com/t/050682282297920786963283f58a9840.ttf") format("truetype");
+}
+
+.home-title {
+    font-family: 'Star Jedi', sans-serif !important;
+    color: #FFE81F !important; /* El amarillo de Star Wars */
+    letter-spacing: 3px;
+}
