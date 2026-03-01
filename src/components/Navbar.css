@@ -4,6 +4,54 @@
     margin-left: 20px;
 }
 
-.marginRigth{
+.marginRigth {
     margin-rigth: 100px;
+}
+
+
+.colorWars {
+    color: #FFE81F !important; 
+    font-weight: bold !important;
+    transition: all 0.3s ease-in-out; 
+    position: relative;
+}
+
+.colorWarsFav{    
+    color: #FFE81F !important; 
+    font-weight: bold !important;
+    transition: all 0.3s ease-in-out; 
+    position: relative;
+}
+
+.colorWarsFav:hover {
+    color: #ffffff !important;
+    text-shadow: 0 0 10px #FFE81F, 0 0 20px #FFE81F; 
+    transform: translateY(-2px); 
+}
+
+
+
+.colorWars:hover {
+    color: #ffffff !important;
+    text-shadow: 0 0 10px #FFE81F, 0 0 20px #FFE81F; 
+    transform: translateY(-2px); 
+}
+
+.colorWars::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    display: block;
+    margin-top: 5px;
+    right: 0;
+    background: #FFE81F;
+    transition: width 0.3s ease;
+    -webkit-transition: width 0.3s ease;
+}
+
+.colorWars:hover::after {
+    width: 100%;
+    left: 0;
+    background: #FFE81F;
 }

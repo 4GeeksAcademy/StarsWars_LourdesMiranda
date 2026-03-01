@@ -1,43 +1,66 @@
 // Import necessary components from react-router-dom and other parts of the application.
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import useGlobalReducer from "../hooks/useGlobalReducer";  // Custom hook for accessing the global state.
+import Card from "./Card.jsx";
+const BASE_URL = import.meta.env.VITE_API_URL;
+import './Home.css';
 
 export const Character = () => {
   // Access the global state and dispatch function using the useGlobalReducer hook.
   const { store, dispatch } = useGlobalReducer()
+  const BASE_URL = import.meta.env.VITE_API_URL;
+
+  const getPeople = async () => {
+    try {
+      const response = await fetch(`${BASE_URL}people`);
+      if (!response.ok) throw new Error("Fallo en la comunicación con la galaxia");
+
+      const data = await response.json();
+
+      dispatch({
+        type: "set_people",
+        payload: data.results
+      });
+
+    } catch (error) {
+      console.error("Error:", error.message);
+    }
+  };
+
+  useEffect(() => {
+    getPeople();
+  }, []);
 
   return (
     <div className="container">
-      <ul className="list-group">
-        {/* Map over the 'todos' array from the store and render each item as a list element */}
-        {store && store.todos?.map((item) => {
-          return (
-            <li
-              key={item.id}  // React key for list items.
-              className="list-group-item d-flex justify-content-between"
-              style={{ background: item.background }}> 
-              
-              {/* Link to the detail page of this todo. */}
-              <Link to={"/single/" + item.id}>Link to: {item.title} </Link>
-              
-              <p>Open file ./store.js to see the global store that contains and updates the list of colors</p>
-              
-              <button className="btn btn-success" 
-                onClick={() => dispatch({
-                  type: "add_task", 
-                  payload: { id: item.id, color: '#ffa500' }
-                })}>
-                Change Color
-              </button>
-            </li>
-          );
-        })}
-      </ul>
-      <br />
+      <div className="text-center mt-5">
+        <h1 className="home-title mb-5">Galactic Characters</h1>
 
-      <Link to="/">
-        <button className="btn btn-primary">Back home</button>
-      </Link>
+        <div className="row pb-5 mt-5">
+          {store.people && store.people.length > 0 ? (
+            store.people.map((person) => (
+              <div className="col-12 col-md-6 col-lg-3 mb-4" key={person.uid}>
+                <Card
+                  title={person.name}
+                  imageUrl={`https://raw.githubusercontent.com/tbone849/star-wars-guide/master/build/assets/img/characters/${person.uid}.jpg`}
+                  description={`Un legendario personaje con ID ${person.uid} de la saga Star Wars.`}
+                  id={person.uid}
+                  type="people"
+                />
+              </div>
+            ))
+          ) : (
+            <div className="col-12">
+              <p className="text-white">Buscando personajes en los archivos Jedi...</p>
+            </div>
+          )}
+        </div>
+
+        <Link to="/">
+          <button className="btn btn-star-wars">Back home</button>
+        </Link>
+      </div>
     </div>
   );
-};
+}; 

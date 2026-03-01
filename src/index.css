@@ -4,13 +4,12 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  z-index: -1; /* Se va al fondo */
+  z-index: -1; 
   background: black url('https://www.transparenttextures.com/patterns/stardust.png') repeat top center;
   animation: stars-animation 500s linear infinite;
-  pointer-events: none; /* Aquí sí, para que los clics pasen de largo y lleguen al navbar */
+  pointer-events: none; 
 }
 
-/* El body debe estar limpio */
 body {
   background-color: black;
   margin: 0;

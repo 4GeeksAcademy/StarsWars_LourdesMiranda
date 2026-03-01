@@ -5,6 +5,76 @@
 
 .home-title {
     font-family: 'Star Jedi', sans-serif !important;
-    color: #FFE81F !important; /* El amarillo de Star Wars */
-    letter-spacing: 3px;
+    color: #FFE81F !important;
+    letter-spacing: 5px;
+    text-shadow: 0 0 10px rgba(255, 232, 31, 0.7);
+    margin-top: 40px;
+    margin-bottom: 20px;
 }
+
+.container {
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 15px;
+    padding: 20px;
+    backdrop-filter: blur(5px);
+}
+
+
+.card {
+    background-color: #1a1a1a !important;
+    border: 1px solid #333 !important;
+    color: white !important;
+    transition: all 0.3s ease-in-out;
+    overflow: hidden;
+    height: 100%;
+}
+
+.card:hover {
+    transform: translateY(-10px); 
+    border-color: #FFE81F !important; 
+    box-shadow: 0 0 20px rgba(255, 232, 31, 0.4); 
+}
+
+.card-img-top {
+    object-fit: contain; 
+    height: 300px;    
+    background-color: transparent; 
+}
+.card-title {
+    color: #FFE81F;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.btn-star-wars {
+    border: 2px solid #FFE81F !important;
+    color: #FFE81F !important;
+    background-color: transparent !important;
+    font-family: 'Star Jedi', sans-serif !important;
+    font-size: 12px !important;
+    letter-spacing: 2px;
+    padding: 8px 15px !important;
+    border-radius: 0px !important; 
+    transition: all 0.3s ease-in-out;
+}
+
+.btn-star-wars:hover {
+    background-color: #FFE81F !important;
+    color: black !important;
+    box-shadow: 0 0 15px #FFE81F;
+}
+
+.btn-favorite {
+    border: 1px solid #FFE81F !important;
+    color: #FFE81F !important;
+    background-color: transparent !important;
+    transition: all 0.3s ease;
+}
+
+.btn-favorite:hover {
+    background-color: #FFE81F !important;
+    border-color: #FFE81F !important;
+    color: white !important;
+    box-shadow: 0 0 10px #FFE81F;
+}
+
