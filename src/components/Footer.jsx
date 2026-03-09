@@ -1,13 +1,18 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHeart } from "@fortawesome/free-solid-svg-icons";
+
 export const Footer = () => (
-    <footer className="footer mt-auto py-3 text-center bg-black">
-        <p style={{ color: "#FFE81F" }}>
-            Made with <i className="fa fa-heart text-danger" /> by{" "}
-            <a 
-                href="http://www.4geeksacademy.com" 
-                style={{ color: "#FFE81F", fontWeight: "bold", textDecoration: "none" }}
-            >
-                Lourdes Miranda
-            </a>
-        </p>
-    </footer>
+	<footer className="site-footer py-4 text-center">
+		<p className="mb-0 text-light-emphasis">
+			Made with <FontAwesomeIcon icon={faHeart} className="text-danger mx-1" /> by{" "}
+			<a
+				href="https://www.4geeksacademy.com"
+				target="_blank"
+				rel="noreferrer"
+				className="footer-link fw-semibold"
+			>
+				Lourdes Miranda
+			</a>
+		</p>
+	</footer>
 );

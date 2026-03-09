@@ -1,36 +1,30 @@
-// Import necessary components and functions from react-router-dom.
-
 import {
-    createBrowserRouter,
-    createRoutesFromElements,
-    Route,
+	createBrowserRouter,
+	createRoutesFromElements,
+	Route
 } from "react-router-dom";
 import { Layout } from "./pages/Layout";
-import { Home } from "./pages/Home";
-import { Single } from "./pages/Single";
-import { Character } from "./pages/Character";
-import { Films } from "./pages/Films";
-import { Vehicles } from "./pages/Vehicles";
-import { Planets } from "./pages/Planets";
+import Home from "./pages/Home";
+import CollectionPage from "./pages/CollectionPage";
+import Detail from "./pages/Detail";
 
 export const router = createBrowserRouter(
-    createRoutesFromElements(
-    // CreateRoutesFromElements function allows you to build route elements declaratively.
-    // Create your routes here, if you want to keep the Navbar and Footer in all views, add your new routes inside the containing Route.
-    // Root, on the contrary, create a sister Route, if you have doubts, try it!
-    // Note: keep in mind that errorElement will be the default page when you don't get a route, customize that page to make your project more attractive.
-    // Note: The child paths of the Layout element replace the Outlet component with the elements contained in the "element" attribute of these child paths.
-
-      // Root Route: All navigation will start from here.
-      <Route path="/" element={<Layout />} errorElement={<h1>Not found!</h1>} >
-
-        {/* Nested Routes: Defines sub-routes within the BaseHome component. */}
-        <Route path= "/" element={<Home />} />
-        <Route path= "/Character" element={<Character />} />
-        <Route path= "/Films" element={<Films />} />
-        <Route path= "/Vehicles" element={<Vehicles />} />
-        <Route path= "/Planets" element={<Planets />} />
-        <Route path="/single/:type/:theId" element={ <Single />} />
-      </Route>
-    )
+	createRoutesFromElements(
+		<Route
+			path="/"
+			element={<Layout />}
+			errorElement={
+				<div className="container page-shell">
+					<div className="alert alert-danger mt-4">
+						This page does not exist in the Jedi archives.
+					</div>
+				</div>
+			}
+		>
+			<Route index element={<Home />} />
+			<Route path=":type" element={<CollectionPage />} />
+			<Route path=":type/:uid" element={<Detail />} />
+			<Route path="single/:type/:uid" element={<Detail />} />
+		</Route>
+	)
 );

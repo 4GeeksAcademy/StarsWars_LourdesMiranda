@@ -1,22 +1,264 @@
-.stars-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: -1; 
-  background: black url('https://www.transparenttextures.com/patterns/stardust.png') repeat top center;
-  animation: stars-animation 500s linear infinite;
-  pointer-events: none; 
+@font-face {
+	font-family: "Star Jedi";
+	src: url("https://db.onlinewebfonts.com/t/050682282297920786963283f58a9840.ttf")
+		format("truetype");
+}
+
+:root {
+	color-scheme: dark;
+	--sw-yellow: #ffe81f;
+	--sw-text: #f8f9fa;
+	--sw-muted: #afbed2;
+	--sw-panel: rgba(9, 14, 27, 0.88);
+	--sw-border: rgba(255, 232, 31, 0.18);
+}
+
+* {
+	box-sizing: border-box;
 }
 
 body {
-  background-color: black;
-  margin: 0;
-  padding: 0;
+	margin: 0;
+	min-height: 100vh;
+	background-color: #02040a;
+	color: var(--sw-text);
+	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+#root {
+	min-height: 100vh;
+	position: relative;
+	isolation: isolate;
+}
+
+a {
+	color: inherit;
+}
+
+.stars-container {
+	position: fixed;
+	inset: 0;
+	z-index: -1;
+	background:
+		radial-gradient(circle at top, rgba(31, 41, 71, 0.45), transparent 40%),
+		black url("https://www.transparenttextures.com/patterns/stardust.png") repeat
+			top center;
+	animation: stars-animation 500s linear infinite;
+	pointer-events: none;
+}
+
+.page-shell {
+	padding-top: 2rem;
+	padding-bottom: 4rem;
+}
+
+.hero-panel,
+.section-panel,
+.detail-panel,
+.status-panel,
+.empty-panel,
+.detail-stat,
+.highlight-chip {
+	background: var(--sw-panel);
+	border: 1px solid var(--sw-border);
+	border-radius: 1.25rem;
+	box-shadow: 0 18px 40px rgba(0, 0, 0, 0.22);
+}
+
+.hero-panel,
+.section-panel,
+.detail-panel {
+	padding: 1.5rem;
+}
+
+.status-panel,
+.empty-panel,
+.detail-stat,
+.highlight-chip {
+	padding: 1rem;
+}
+
+.home-title {
+	font-family: "Star Jedi", sans-serif;
+	color: var(--sw-yellow);
+	letter-spacing: 0.18em;
+	text-shadow: 0 0 16px rgba(255, 232, 31, 0.4);
+}
+
+.eyebrow {
+	letter-spacing: 0.18em;
+	font-size: 0.75rem;
+	text-transform: uppercase;
+}
+
+.section-title {
+	font-size: clamp(1.7rem, 2vw, 2.2rem);
+	font-weight: 700;
+	color: var(--sw-text);
+}
+
+.resource-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+	gap: 1rem;
+}
+
+.resource-card {
+	display: flex;
+	flex-direction: column;
+	background: linear-gradient(180deg, rgba(15, 22, 39, 0.96), rgba(5, 7, 14, 0.96));
+	border: 1px solid rgba(255, 232, 31, 0.14);
+	border-radius: 1rem;
+	overflow: hidden;
+	height: 100%;
+	transition:
+		transform 0.2s ease,
+		box-shadow 0.2s ease,
+		border-color 0.2s ease;
+}
+
+.resource-card:hover {
+	transform: translateY(-6px);
+	border-color: rgba(255, 232, 31, 0.4);
+	box-shadow: 0 20px 30px rgba(0, 0, 0, 0.35);
+}
+
+.card-media {
+	width: 100%;
+	aspect-ratio: 16 / 10;
+	object-fit: cover;
+	background-color: rgba(0, 0, 0, 0.65);
+}
+
+.resource-meta {
+	display: grid;
+	gap: 0.6rem;
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.resource-meta li {
+	color: var(--sw-muted);
+	font-size: 0.9rem;
+}
+
+.resource-meta span {
+	display: block;
+	font-size: 0.75rem;
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+}
+
+.resource-meta strong {
+	color: var(--sw-text);
+	display: block;
+	font-size: 0.95rem;
+}
+
+.btn-star-wars {
+	border: 1px solid var(--sw-yellow) !important;
+	color: var(--sw-yellow) !important;
+	background: transparent !important;
+	font-family: "Star Jedi", sans-serif !important;
+	font-size: 0.75rem !important;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	padding: 0.75rem 1rem !important;
+}
+
+.btn-star-wars:hover,
+.btn-star-wars:focus {
+	background: var(--sw-yellow) !important;
+	color: black !important;
+	box-shadow: 0 0 18px rgba(255, 232, 31, 0.35);
+}
+
+.btn-favorite {
+	width: 44px;
+	height: 44px;
+	border-radius: 999px;
+	border: 1px solid rgba(255, 232, 31, 0.35) !important;
+	background: transparent !important;
+}
+
+.btn-favorite:hover,
+.btn-favorite.is-active {
+	background: rgba(255, 232, 31, 0.12) !important;
+}
+
+.detail-media {
+	width: 100%;
+	max-height: 420px;
+	object-fit: cover;
+	background: rgba(0, 0, 0, 0.65);
+}
+
+.detail-highlights {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+	gap: 0.75rem;
+}
+
+.highlight-chip,
+.detail-stat {
+	height: 100%;
+}
+
+.highlight-chip span,
+.detail-label {
+	display: block;
+	font-size: 0.78rem;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+}
+
+.highlight-chip strong,
+.detail-value {
+	display: block;
+	margin-top: 0.3rem;
+	font-size: 1rem;
+	font-weight: 600;
+	color: var(--sw-text);
+}
+
+.site-footer {
+	border-top: 1px solid rgba(255, 232, 31, 0.12);
+	background: rgba(0, 0, 0, 0.7);
+	backdrop-filter: blur(10px);
+}
+
+.footer-link {
+	color: var(--sw-yellow);
+	text-decoration: none;
+}
+
+.footer-link:hover {
+	color: white;
 }
 
 @keyframes stars-animation {
-  0% { background-position: 0 0; }
-  100% { background-position: 10000px 5000px; }
+	0% {
+		background-position: 0 0;
+	}
+	100% {
+		background-position: 10000px 5000px;
+	}
+}
+
+@media (max-width: 767px) {
+	.page-shell {
+		padding-top: 1.25rem;
+	}
+
+	.hero-panel,
+	.section-panel,
+	.detail-panel {
+		padding: 1.1rem;
+	}
+
+	.home-title {
+		letter-spacing: 0.08em;
+		font-size: 1.6rem;
+	}
 }

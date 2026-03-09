@@ -1,166 +1,150 @@
-import { useEffect, useState } from "react";
-import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
-import Card from "./Card.jsx";
-import './Home.css';
+import { useEffect } from "react";
+import { Link } from "react-router-dom";
+import Card from "../components/Card";
+import useGlobalReducer from "../hooks/useGlobalReducer";
+import { RESOURCE_CONFIG, loadCatalog } from "../services/swapi";
 
-export const Home = () => {
-    const { store, dispatch } = useGlobalReducer();
-    const BASE_URL = import.meta.env.VITE_API_URL;
+const HOME_SECTIONS = [
+	{
+		type: "people",
+		eyebrow: "The iconic cast",
+		description: "Heroes, villains and smugglers pulled from the Jedi archives."
+	},
+	{
+		type: "planets",
+		eyebrow: "Worlds to explore",
+		description: "Climate, terrain and population snapshots from the galaxy."
+	},
+	{
+		type: "vehicles",
+		eyebrow: "Ships and speeders",
+		description: "Technical specs for the most famous rides in the saga."
+	},
+	{
+		type: "films",
+		eyebrow: "Stories that shaped the saga",
+		description: "Episode data and directors for the major Star Wars films."
+	}
+];
 
-    const getPeople = async () => {
-        try {
-            const response = await fetch(`${BASE_URL}people`);
-            if (!response.ok) throw new Error("Fallo en la comunicación con la galaxia");
+const PREVIEW_LIMIT = 4;
 
-            const data = await response.json();
+const Home = () => {
+	const { store, dispatch } = useGlobalReducer();
+	const { catalog, status } = store;
+	const hasCatalogContent = HOME_SECTIONS.some(
+		({ type }) => catalog[type].length > 0
+	);
 
-            dispatch({
-                type: "set_people",
-                payload: data.results
-            });
+	useEffect(() => {
+		loadCatalog(dispatch, {
+			hasLoaded: status.catalog.hasLoaded
+		});
+	}, [dispatch, status.catalog.hasLoaded]);
 
-        } catch (error) {
-            console.error("Error:", error.message);
-        }
-    };
+	if (status.catalog.isLoading && !hasCatalogContent) {
+		return (
+			<div className="container page-shell">
+				<section className="hero-panel text-center">
+					<div
+						className="spinner-border text-warning"
+						role="status"
+						style={{ width: "3rem", height: "3rem" }}
+					>
+						<span className="visually-hidden">Loading...</span>
+					</div>
+					<p className="mt-3 mb-0 text-light-emphasis">
+						Loading the Star Wars catalog from SWAPI...
+					</p>
+				</section>
+			</div>
+		);
+	}
 
-    const getFilms = async () => {
-        try {
-            const response = await fetch(`${BASE_URL}films`);
-            if (!response.ok) throw new Error("Fallo en la comunicación con la galaxia");
+	return (
+		<div className="container page-shell">
+			<section className="hero-panel">
+				<div className="row align-items-center g-4">
+					<div className="col-lg-8">
+						<p className="eyebrow text-warning mb-2">Lourdes Miranda project</p>
+						<h1 className="display-5 fw-bold text-light mb-3 home-title">
+							Star Wars reading list with global favorites, reusable routes and
+							cached detail pages.
+						</h1>
+						<p className="lead text-light-emphasis mb-0">
+							The home page now loads the catalog once, stores it globally and
+							reuses the same source of truth across the rest of the app.
+						</p>
+					</div>
 
-            const data = await response.json();
+					<div className="col-lg-4">
+						<div className="status-panel">
+							<p className="mb-1 text-uppercase small text-warning fw-semibold">
+								Global state snapshot
+							</p>
+							<p className="mb-2 text-light">
+								Favorites saved: <strong>{store.favorites.length}</strong>
+							</p>
+							<p className="mb-0 text-light-emphasis">
+								Catalog cached: {status.catalog.hasLoaded ? "Yes" : "No"}
+							</p>
+						</div>
+					</div>
+				</div>
+			</section>
 
-            dispatch({
-                type: "set_films",
-                payload: data.result
-            });
+			{status.catalog.error ? (
+				<div className="alert alert-danger d-flex justify-content-between align-items-center flex-wrap gap-3">
+					<span>{status.catalog.error}</span>
+					<button
+						type="button"
+						className="btn btn-outline-danger btn-sm"
+						onClick={() =>
+							loadCatalog(dispatch, {
+								hasLoaded: status.catalog.hasLoaded,
+								forceReload: true
+							})
+						}
+					>
+						Try again
+					</button>
+				</div>
+			) : null}
 
-        } catch (error) {
-            console.error("Error:", error.message);
-        }
-    };
+			{HOME_SECTIONS.map((section) => (
+				<section key={section.type} className="section-panel mb-4">
+					<div className="d-flex justify-content-between align-items-end flex-wrap gap-3 mb-4">
+						<div>
+							<p className="eyebrow text-warning mb-1">{section.eyebrow}</p>
+							<h2 className="section-title mb-2">
+								{RESOURCE_CONFIG[section.type].label}
+							</h2>
+							<p className="text-light-emphasis mb-0">{section.description}</p>
+						</div>
 
-    const getVehicles = async () => {
-        try {
-            const response = await fetch(`${BASE_URL}vehicles`);
-            if (!response.ok) throw new Error("Fallo en la comunicación con la galaxia");
+						<Link to={`/${section.type}`} className="btn btn-star-wars">
+							Open full collection
+						</Link>
+					</div>
 
-            const data = await response.json();
+					{catalog[section.type].length === 0 ? (
+						<div className="empty-panel">
+							No {RESOURCE_CONFIG[section.type].label.toLowerCase()} available
+							right now.
+						</div>
+					) : (
+						<div className="resource-grid">
+							{catalog[section.type]
+								.slice(0, PREVIEW_LIMIT)
+								.map((item) => (
+									<Card key={`${item.type}-${item.uid}`} item={item} />
+								))}
+						</div>
+					)}
+				</section>
+			))}
+		</div>
+	);
+};
 
-            dispatch({
-                type: "set_vehicles",
-                payload: data.results
-            });
-
-        } catch (error) {
-            console.error("Error:", error.message);
-        }
-    };
-
-    const getPlanets = async () => {
-        try {
-            const response = await fetch(`${BASE_URL}planets`);
-            if (!response.ok) throw new Error("Fallo en la comunicación con la galaxia");
-
-            const data = await response.json();
-
-            dispatch({
-                type: "set_planets",
-                payload: data.results
-            });
-
-        } catch (error) {
-            console.error("Error:", error.message);
-        }
-    };
-
-    useEffect(() => {
-        getPeople();
-        getFilms();
-        getVehicles();
-        getPlanets();
-    }, []);
-
-    return (
-        <div className="text-center mt-5">
-            <h1 className="text-white home-title">Characters</h1>
-            <div className="container">
-                <div className="row pb-5 mt-5">
-                    {store.people && store.people.length > 0 ? (
-                        store.people.slice(0, 3).map((person) => (
-                            <div className="col-12 col-md-6 col-lg-4 mb-4" key={person.uid}>
-                                <Card
-                                    title={person.name}
-                                    imageUrl={`https://raw.githubusercontent.com/tbone849/star-wars-guide/master/build/assets/img/characters/${person.uid}.jpg`}
-                                    id={person.uid}
-                                    type="people"
-                                />
-                            </div>
-                        ))
-                    ) : (
-                        <p className="text-white">Conectando con el hiperespacio...</p>
-                    )}
-                </div>
-            </div>
-            <h1 className="text-white home-title">Films</h1>
-            <div className="container">
-                <div className="row pb-5 mt-5">
-                    {store.films && store.films.length > 0 ? (
-                        store.films.slice(0, 3).map((film) => (
-                            <div className="col-12 col-md-6 col-lg-4 mb-4" key={film.uid}>
-                                <Card
-                                    title={film.properties?.title || film.name}
-                                    imageUrl={`https://raw.githubusercontent.com/tbone849/star-wars-guide/master/build/assets/img/films/${film.uid}.jpg`}
-                                    id={film.uid}
-                                    // CAMBIADO: de "film" a "films" para que coincida con la API y la carpeta de fotos
-                                    type="films"
-                                />
-                            </div>
-                        ))
-                    ) : (
-                        <p className="text-white">Revisando películas...</p>
-                    )}
-                </div>
-            </div>
-            <h1 className="text-white home-title">Vehicles</h1>
-            <div className="container">
-                <div className="row pb-5 mt-5">
-                    {store.vehicles && store.vehicles.length > 0 ? (
-                        store.vehicles.slice(0, 3).map((v) => (
-                            <div className="col-12 col-md-6 col-lg-4 mb-4" key={v.uid}>
-                                <Card
-                                    title={v.name}
-                                    imageUrl={`https://raw.githubusercontent.com/tbone849/star-wars-guide/master/build/assets/img/vehicles/${v.uid}.jpg`}
-                                    id={v.uid}
-                                    type="vehicles"
-                                />
-                            </div>
-                        ))
-                    ) : (
-                        <p className="text-white">Arrancando motores...</p>
-                    )}
-                </div>
-            </div>
-            <h1 className="text-white home-title">Planets</h1>
-            <div className="container">
-                <div className="row pb-5 mt-5">
-                    {store.planets && store.planets.length > 0 ? (
-                        store.planets.slice(1, 4).map((planets) => (
-                            <div className="col-12 col-md-6 col-lg-4 mb-4" key={planets.uid}>
-                                <Card
-                                    title={planets.name}
-                                    imageUrl={`https://raw.githubusercontent.com/tbone849/star-wars-guide/master/build/assets/img/planets/${planets.uid}.jpg`}
-                                    id={planets.uid}
-                                    type="planets"
-                                />
-                            </div>
-                        ))
-                    ) : (
-                        <p className="text-white">Conectando con el galaxias...</p>
-                    )}
-                </div>
-            </div>
-        </div>
-    );
-}; 
+export default Home;
