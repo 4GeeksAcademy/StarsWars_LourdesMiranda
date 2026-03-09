@@ -1,24 +1,19 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import './index.css'  // Global styles for your application
-import { RouterProvider } from "react-router-dom";  // Import RouterProvider to use the router
-import { router } from "./routes";  // Import the router configuration
-import { StoreProvider } from './hooks/useGlobalReducer';  // Import the StoreProvider for global state management+
+import { StrictMode } from "react";
+import ReactDOM from "react-dom/client";
+import { RouterProvider } from "react-router-dom";
+import { StoreProvider } from "./hooks/useGlobalReducer";
+import "./index.css";
+import { router } from "./routes";
 
 const Main = () => {
-    return (
-        <React.StrictMode>  
-            {/* Provide global state to all components */}
-            <StoreProvider> 
-                {/* 1. Añadimos el contenedor de estrellas aquí */}
-                <div className="stars-container"></div>
+	return (
+		<StrictMode>
+			<StoreProvider>
+				<div className="stars-container" aria-hidden="true"></div>
+				<RouterProvider router={router} />
+			</StoreProvider>
+		</StrictMode>
+	);
+};
 
-                {/* Set up routing for the application */} 
-                <RouterProvider router={router} />
-            </StoreProvider>
-        </React.StrictMode>
-    );
-}
-
-// Render the Main component into the root DOM element.
-ReactDOM.createRoot(document.getElementById('root')).render(<Main />)
+ReactDOM.createRoot(document.getElementById("root")).render(<Main />);
