@@ -41,9 +41,11 @@ export const Navbar = () => {
                                 </a>
                                 <ul className="dropdown-menu dropdown-menu-end bg-dark border-secondary">
                                     {store.favorites.length > 0 ? (
-                                        store.favorites.map((fav, index) => (
+                                        store.favorites.map((fav, index) => ( 
                                             <li key={index} className="d-flex justify-content-between align-items-center px-3 py-1" onClick={(e) => e.stopPropagation()}>
-                                                <span className="text-warning" style={{ fontSize: "14px" }}>{fav}</span>
+                                                <Link to={`/${fav.type}/${fav.uid}`} className="text-warning text-decoration-none" style={{ fontSize: "14px" }}>
+                                                    {fav.name}
+                                                </Link>
                                                 <FontAwesomeIcon
                                                     icon={faTrash}
                                                     className="text-danger ms-3"

@@ -1,13 +1,11 @@
-// Import necessary components from react-router-dom and other parts of the application.
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
-import useGlobalReducer from "../hooks/useGlobalReducer";  // Custom hook for accessing the global state.
-import Card from "./Card.jsx";
+import useGlobalReducer from "../hooks/useGlobalReducer";  
+import Card from "../components/Card.jsx";
 const BASE_URL = import.meta.env.VITE_API_URL;
 import './Home.css';
 
 export const Films = () => {
-  // Access the global state and dispatch function using the useGlobalReducer hook.
   const { store, dispatch } = useGlobalReducer()
   const BASE_URL = import.meta.env.VITE_API_URL;
 

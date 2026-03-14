@@ -2,7 +2,7 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import useGlobalReducer from "../hooks/useGlobalReducer";  // Custom hook for accessing the global state.
-import Card from "./Card.jsx";
+import Card from "../components/Card.jsx";
 const BASE_URL = import.meta.env.VITE_API_URL;
 import './Home.css';
 
